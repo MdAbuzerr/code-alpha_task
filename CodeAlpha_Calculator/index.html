@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CodeAlpha — Interactive Calculator</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="calculator-wrapper">
+    <!-- Header Badge -->
+    <header class="app-header">
+      <div class="brand-pill">
+        <span class="live-dot"></span>
+        <span>CodeAlpha Frontend Internship • Task 2</span>
+      </div>
+      <h1 class="app-title">Precision <span class="gradient-text">Calculator</span></h1>
+    </header>
+
+    <!-- Main Calculator Device -->
+    <main class="calculator-card" id="calculator">
+      <!-- Device Top Toolbar -->
+      <div class="calculator-toolbar">
+        <div class="calc-logo">
+          <i class="fa-solid fa-calculator"></i>
+          <span>CodeAlpha Calc</span>
+        </div>
+        <div class="toolbar-actions">
+          <!-- Audio Click Toggle -->
+          <button id="soundToggleBtn" class="tool-btn active" title="Toggle Button Sound (On)" aria-label="Toggle Sound">
+            <i class="fa-solid fa-volume-high"></i>
+          </button>
+          <!-- History Drawer Toggle -->
+          <button id="historyToggleBtn" class="tool-btn" title="View Calculation History" aria-label="Calculation History">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+            <span id="historyCountBadge" class="history-badge hidden">0</span>
+          </button>
+          <!-- Theme Toggle -->
+          <button id="themeToggleBtn" class="tool-btn" title="Toggle Light/Dark Theme" aria-label="Toggle Theme">
+            <i class="fa-solid fa-sun"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Display Screen Area -->
+      <section class="display-container">
+        <!-- Secondary / Expression Tape -->
+        <div class="display-expression" id="expressionDisplay" aria-live="polite"></div>
+        <!-- Primary Result / Active Value -->
+        <div class="display-primary">
+          <span class="active-operator-badge" id="operatorBadge"></span>
+          <div class="display-value" id="resultDisplay" aria-live="assertive">0</div>
+        </div>
+      </section>
+
+      <!-- Keypad Grid -->
+      <section class="keypad-grid" role="region" aria-label="Calculator Keypad">
+        <!-- Row 1: Clear & Functions -->
+        <button class="key key-action" data-action="all-clear" data-key="Escape" title="Clear All (Esc)">AC</button>
+        <button class="key key-action" data-action="backspace" data-key="Backspace" title="Backspace (Delete)">
+          <i class="fa-solid fa-delete-left"></i>
+        </button>
+        <button class="key key-action" data-action="parentheses" data-key="()" title="Parentheses ( )">( )</button>
+        <button class="key key-operator" data-action="operator" data-value="/" data-key="/" title="Divide (/)">÷</button>
+
+        <!-- Row 2: 7, 8, 9, Multiply -->
+        <button class="key key-number" data-value="7" data-key="7">7</button>
+        <button class="key key-number" data-value="8" data-key="8">8</button>
+        <button class="key key-number" data-value="9" data-key="9">9</button>
+        <button class="key key-operator" data-action="operator" data-value="*" data-key="*" title="Multiply (*)">×</button>
+
+        <!-- Row 3: 4, 5, 6, Subtract -->
+        <button class="key key-number" data-value="4" data-key="4">4</button>
+        <button class="key key-number" data-value="5" data-key="5">5</button>
+        <button class="key key-number" data-value="6" data-key="6">6</button>
+        <button class="key key-operator" data-action="operator" data-value="-" data-key="-" title="Subtract (-)">−</button>
+
+        <!-- Row 4: 1, 2, 3, Add -->
+        <button class="key key-number" data-value="1" data-key="1">1</button>
+        <button class="key key-number" data-value="2" data-key="2">2</button>
+        <button class="key key-number" data-value="3" data-key="3">3</button>
+        <button class="key key-operator" data-action="operator" data-value="+" data-key="+" title="Add (+)">+</button>
+
+        <!-- Row 5: Negate, 0, Decimal, Equals -->
+        <button class="key key-action" data-action="negate" title="Toggle Positive/Negative (±)">±</button>
+        <button class="key key-number" data-value="0" data-key="0">0</button>
+        <button class="key key-number" data-value="." data-key="." title="Decimal Point (.)">.</button>
+        <button class="key key-equals" data-action="calculate" data-key="Enter" title="Calculate (Enter or =)">=</button>
+      </section>
+
+      <!-- History Drawer (Slide-out panel) -->
+      <aside class="history-drawer" id="historyDrawer" aria-hidden="true">
+        <div class="history-header">
+          <div class="history-title">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+            <span>Calculation History</span>
+          </div>
+          <button id="closeHistoryBtn" class="close-history-btn" title="Close History">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <div class="history-list" id="historyList">
+          <!-- History entries injected by script.js -->
+        </div>
+
+        <div class="history-footer">
+          <button id="clearHistoryBtn" class="clear-history-btn">
+            <i class="fa-solid fa-trash-can"></i>
+            <span>Clear History</span>
+          </button>
+        </div>
+      </aside>
+    </main>
+
+    <!-- Keyboard Shortcuts Guide Card -->
+    <footer class="shortcuts-guide">
+      <div class="guide-content">
+        <h3><i class="fa-regular fa-keyboard"></i> Full Keyboard Support Enabled</h3>
+        <div class="shortcuts-grid">
+          <span class="chip"><kbd>0</kbd>–<kbd>9</kbd> Numbers</span>
+          <span class="chip"><kbd>+</kbd> <kbd>-</kbd> <kbd>*</kbd> <kbd>/</kbd> Arithmetic</span>
+          <span class="chip"><kbd>Enter</kbd> or <kbd>=</kbd> Calculate</span>
+          <span class="chip"><kbd>Backspace</kbd> Delete</span>
+          <span class="chip"><kbd>Esc</kbd> Clear All</span>
+          <span class="chip"><kbd>(</kbd> <kbd>)</kbd> Brackets</span>
+        </div>
+      </div>
+      <p class="footer-note">Designed & Built for <strong>CodeAlpha Frontend Development Internship</strong> • Task 2</p>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
